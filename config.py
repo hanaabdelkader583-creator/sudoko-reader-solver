@@ -14,3 +14,8 @@ GIVENS_LEVELS = (25, 30, 35)   # needed by Experiment 2
 PUZZLES_PER_LEVEL = 100
 BLANK_THRESHOLD = 0.05    # tile is blank if max pixel < this
 MAX_GEN_ATTEMPTS = 200
+
+N_SEED_GROUPS = 5
+PUZZLES_PER_GROUP = PUZZLES_PER_LEVEL // N_SEED_GROUPS   # 20
+SUDOKU_DIR = PROC_DIR / "sudoku"
+SAMPLES_DIR = PROC_DIR / "samples"
