@@ -1,7 +1,6 @@
 # Ignore raw & processed dataset files
-data/MNIST/raw/
-data/MNIST/processed/
-data/
+/data/
+
 
 # Ignore Python cache & virtual environments
 __pycache__/
