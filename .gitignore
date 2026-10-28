@@ -1,0 +1,18 @@
+# Ignore raw & processed dataset files
+data/MNIST/raw/
+data/MNIST/processed/
+data/
+
+# Ignore Python cache & virtual environments
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
