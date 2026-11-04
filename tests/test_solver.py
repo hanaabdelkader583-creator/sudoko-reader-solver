@@ -58,4 +58,14 @@ def test_ac3_and_mac_solve_correctly_and_count_revisions():
 def test_ac3_needs_fc():
     import pytest
     with pytest.raises(ValueError):
-        solve([0] * 81, use_fc=False, use_mrv=False, use_ac3=True)    
+        solve([0] * 81, use_fc=False, use_mrv=False, use_ac3=True) 
+def test_degree_heuristic_solves_correctly():
+    for p, s in _puzzles(25, 3):
+        sol, _ = solve(p, use_fc=True, use_mrv=True, use_degree=True)
+        assert sol == [int(v) for v in s]
+
+
+def test_degree_needs_mrv():
+    import pytest
+    with pytest.raises(ValueError):
+        solve([0] * 81, use_fc=True, use_mrv=False, use_degree=True)           

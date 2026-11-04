@@ -9,11 +9,13 @@ class _Cap(Exception):
     pass
 
 
-def solve(grid, use_fc=True, use_mrv=True, use_ac3=False,
+def solve(grid, use_fc=True, use_mrv=True, use_degree=False, use_ac3=False,
           maintain_ac3=False, max_assignments=None):
     """Return (solution_list or None, Stats)."""
     if (use_ac3 or maintain_ac3) and not use_fc:
         raise ValueError("use_ac3 needs use_fc (domains must be tracked)")
+    if use_degree and not use_mrv:
+        raise ValueError("use_degree is a tie-break for MRV, so it needs use_mrv")
 
     g = to_list(grid)
     stats = Stats()
@@ -47,6 +49,10 @@ def solve(grid, use_fc=True, use_mrv=True, use_ac3=False,
         if not blanks:
             return None
         if use_mrv:
+            if use_degree:
+                return min(blanks, key=lambda i: (
+                    len(dom[i]),
+                    -sum(1 for j in PEERS[i] if g[j] == 0)))
             return min(blanks, key=lambda i: len(dom[i]))
         return blanks[0]
 
