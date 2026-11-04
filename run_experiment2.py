@@ -24,10 +24,9 @@ table = "\n".join(lines)
 capped_total = sum(int(res[g][n]["capped"].sum()) for g in res for n in res[g])
 n_per_level = config.PUZZLES_PER_LEVEL if not quick else 2 * config.N_SEED_GROUPS
 note = (f"\n\nNote: runs are capped at 500,000 assignments. "
-        f"{capped_total} puzzle run(s) hit the cap (see the Capped column, "
-        f"out of {n_per_level} puzzles per level and method); the means for those "
-        f"rows are therefore lower bounds. Std is the sample std across "
-        f"{config.N_SEED_GROUPS} seed groups.")
+        f"{capped_total} of {len(res) * len(CONFIGS) * n_per_level} runs hit the cap "
+        f"(see the Capped column); the means for those rows are therefore lower bounds. "
+        f"Std is the sample std across {config.N_SEED_GROUPS} seed groups.")
 table = table + note
 (out_dir / "experiment2_table.md").write_text(table, encoding="utf-8")
 print(table)
