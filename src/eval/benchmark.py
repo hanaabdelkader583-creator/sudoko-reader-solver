@@ -4,9 +4,12 @@ import config
 from src.csp.solver import solve
 
 CONFIGS = {
-    "BT":          dict(use_fc=False, use_mrv=False),
-    "BT+FC":       dict(use_fc=True,  use_mrv=False),
-    "BT+FC+AC-3":  dict(use_fc=True,  use_mrv=False, use_ac3=True),
+    "BT":                 dict(use_fc=False, use_mrv=False),
+    "BT+FC":              dict(use_fc=True,  use_mrv=False),
+    "BT+FC+AC-3":         dict(use_fc=True,  use_mrv=False, use_ac3=True),
+    "BT+FC+MRV":          dict(use_fc=True,  use_mrv=True),
+    "BT+FC+MRV+degree":   dict(use_fc=True,  use_mrv=True, use_degree=True),
+    "BT+FC+AC-3+MRV":     dict(use_fc=True, use_mrv=True, use_ac3=True),
 }
 CAP = 500_000
 

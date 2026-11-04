@@ -34,15 +34,15 @@ print(table)
 metrics = [("assignments", "Assignments"),
            ("backtracks", "Backtracks"),
            ("time_s", "Time (s)")]
-fig, axes = plt.subplots(1, 3, figsize=(14, 4))
-width = 0.25
+fig, axes = plt.subplots(1, 3, figsize=(16, 4.5))
+width = 0.16
 for ax, (key, label) in zip(axes, metrics):
     for k, name in enumerate(CONFIGS):
         means = [res[g][name][key].mean() for g in config.GIVENS_LEVELS]
         stds = [res[g][name][key].std(ddof=1) for g in config.GIVENS_LEVELS]
         ax.bar(np.arange(3) + k * width, means, width,
                yerr=stds, capsize=3, label=name)
-    ax.set_xticks(np.arange(3) + width)
+    ax.set_xticks(np.arange(3) + 2*width)
     ax.set_xticklabels([str(g) for g in config.GIVENS_LEVELS])
     ax.set_xlabel("Number of givens")
     ax.set_ylabel(f"{label} (mean over 5 seeds)")
