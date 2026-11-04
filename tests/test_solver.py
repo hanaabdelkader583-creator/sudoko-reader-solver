@@ -37,3 +37,25 @@ def test_impossible_cases():
     h[17] = 9
     sol, st = solve(h)
     assert sol is None                     # no clash, but cell 8 has an empty domain
+
+
+def test_ac3_detects_impossible_without_search():
+    g = [0] * 81
+    g[:8] = [1, 2, 3, 4, 5, 6, 7, 8]
+    g[17] = 9
+    sol, st = solve(g, use_fc=True, use_ac3=True)
+    assert sol is None and st.assignments == 0     # found before any search
+
+
+def test_ac3_and_mac_solve_correctly_and_count_revisions():
+    for p, s in _puzzles(30, 3):
+        for kw in ({"use_ac3": True}, {"use_ac3": True, "maintain_ac3": True}):
+            sol, st = solve(p, **kw)
+            assert sol == [int(v) for v in s]
+            assert st.ac3_revisions > 0
+
+
+def test_ac3_needs_fc():
+    import pytest
+    with pytest.raises(ValueError):
+        solve([0] * 81, use_fc=False, use_mrv=False, use_ac3=True)    
