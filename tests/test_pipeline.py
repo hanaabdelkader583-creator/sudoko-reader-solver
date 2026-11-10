@@ -66,3 +66,12 @@ def test_real_csp_solves_corrected_grid():
     assert r.solved
     assert r.corrections == [(0, 1, 4, int(SOL[0, 1]))]   # the misread was repaired
     assert is_valid_solution(r.solution, r.corrected_grid)  # real CSP gave a valid solution
+
+
+def test_solvable_goal_repairs_a_misread_the_conflict_check_cannot_see():
+    # (0,0) misread as 3, but the cells that would conflict with it are blank, so there is
+    # no visible conflict. With the "puzzle solvable" goal the search must still repair it.
+    probs, blank = make_probs(SOL, {(0, 0): 3}, blanks={(0, 1), (8, 0)})
+    r = solve_from_tiles(TILES, predict=fake_predict(probs, blank), solver=fake_solver,
+                         solvable_goal=True)
+    assert r.solved and r.corrections == [(0, 0, 3, int(SOL[0, 0]))]

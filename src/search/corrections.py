@@ -90,7 +90,8 @@ def _heuristic(pairs, cost, corrected_cells) -> float:
 
 def search_corrections(probs, blank, method: str = "astar",
                        max_expansions: int = 200_000, top_k: int = 8,
-                       max_corrections: int | None = None) -> SearchResult:
+                       max_corrections: int | None = None, goal=None,
+                       n_uncertain: int = 8) -> SearchResult:
     if method not in METHODS:
         raise ValueError(f"method must be one of {METHODS}")
     probs = np.asarray(probs, dtype=np.float64).reshape(81, 9)
@@ -108,6 +109,8 @@ def search_corrections(probs, blank, method: str = "astar",
     def priority(g_cost, h):
         return {"ucs": g_cost, "greedy": h, "astar": g_cost + h}[method]
 
+    uncertain = sorted((i for i in range(81) if cands[i]),
+                       key=lambda i: cost[i, cands[i][0]])[:n_uncertain]
     start = frozenset()
     pairs0 = find_conflicts(base)
     h0 = _heuristic(pairs0, cost, set())
@@ -122,7 +125,7 @@ def search_corrections(probs, blank, method: str = "astar",
             continue
         grid = apply(state)
         pairs = find_conflicts(grid)
-        if not pairs:
+        if not pairs and (goal is None or goal(grid.reshape(9, 9))):
             corr = sorted((c // 9, c % 9, int(base[c]), d) for c, d in state)
             return SearchResult(True, grid.reshape(9, 9), corr, g_cost, expanded, generated, method)
         if expanded >= max_expansions:
@@ -131,7 +134,7 @@ def search_corrections(probs, blank, method: str = "astar",
             continue
         expanded += 1
         corrected = {c for c, _ in state}
-        for cell in pairs[0]:
+        for cell in (pairs[0] if pairs else uncertain):
             if cell in corrected:
                 continue
             for k in cands[cell]:
