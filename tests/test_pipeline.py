@@ -59,8 +59,10 @@ def test_unsolvable_corrected_grid_is_reported_with_suspects():
 
 def test_real_csp_solves_corrected_grid():
     from src.csp.solver import solve
+    from src.integration.pipeline import is_valid_solution
     blanks = {(r, c) for r in range(9) for c in range(9) if (r * 3 + c) % 3 == 0}
     probs, blank = make_probs(SOL, {(0, 1): 4}, blanks)
     r = solve_from_tiles(TILES, predict=fake_predict(probs, blank), solver=solve)
-    assert r.solved and np.array_equal(r.solution, SOL)
-    
+    assert r.solved
+    assert r.corrections == [(0, 1, 4, int(SOL[0, 1]))]   # the misread was repaired
+    assert is_valid_solution(r.solution, r.corrected_grid)  # real CSP gave a valid solution
