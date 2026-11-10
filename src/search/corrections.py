@@ -89,7 +89,8 @@ def _heuristic(pairs, cost, corrected_cells) -> float:
 
 
 def search_corrections(probs, blank, method: str = "astar",
-                       max_expansions: int = 200_000, top_k: int = 8) -> SearchResult:
+                       max_expansions: int = 200_000, top_k: int = 8,
+                       max_corrections: int | None = None) -> SearchResult:
     if method not in METHODS:
         raise ValueError(f"method must be one of {METHODS}")
     probs = np.asarray(probs, dtype=np.float64).reshape(81, 9)
@@ -126,6 +127,8 @@ def search_corrections(probs, blank, method: str = "astar",
             return SearchResult(True, grid.reshape(9, 9), corr, g_cost, expanded, generated, method)
         if expanded >= max_expansions:
             break
+        if max_corrections is not None and len(state) >= max_corrections:
+            continue
         expanded += 1
         corrected = {c for c, _ in state}
         for cell in pairs[0]:
