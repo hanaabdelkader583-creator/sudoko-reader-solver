@@ -38,11 +38,5 @@ Mosaic size is 252x252, float32 in 0-1. Blank cells are detected by a brightness
 (max pixel < 0.05), never by the NN.
 Test images are used for mosaics because training and test writers are different people.
 
-## Neural Network & Vision Pipeline (CNN & Baseline)
-* **MNIST Digits (Classes 1-9):** Real handwritten digit images (28x28 pixels) and labels sourced from the public MNIST database. Pixel intensities are scaled to [0, 1].
-* **Blank Cells (Class 0):** Generated synthetically. These are 28x28 near-black image crops injected with simulated sensor noise, specks, and leftover grid-line fragments to train the model to ignore empty Sudoku cells. 
-* **Trained Weights (`models/sudoku_digit_cnn.pt`):** Saved CNN checkpoint containing model state dictionaries, architectural metadata, and embedded normalization buffers (`MNIST_MEAN` and `MNIST_STD`).
-* **Injected Misreads:** Low-confidence digits intentionally injected into test puzzles to allow the Search and CSP integration pipeline to evaluate correction handling.
-
 ## Not yet added
 Injected misreads (hard, low-confidence digits) are added in Phase 3, once NN probabilities exist.
