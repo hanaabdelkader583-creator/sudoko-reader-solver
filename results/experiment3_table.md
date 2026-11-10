@@ -1,0 +1,19 @@
+| Misreads | Method | Recovery % | Solved % | Time s |
+|---|---|---|---|---|
+| 0 | NN-guided (A*) | 100.0 ± 0.0 | 100.0 ± 0.0 | 0.0050 ± 0.0005 |
+| 0 | No correction | 100.0 ± 0.0 | 100.0 ± 0.0 | 0.0013 ± 0.0001 |
+| 0 | Random correction | 100.0 ± 0.0 | 100.0 ± 0.0 | 0.0014 ± 0.0001 |
+| 1 | NN-guided (A*) | 95.0 ± 6.1 | 100.0 ± 0.0 | 0.0091 ± 0.0013 |
+| 1 | No correction | 0.0 ± 0.0 | 13.0 ± 5.7 | 0.0003 ± 0.0002 |
+| 1 | Random correction | 13.0 ± 12.0 | 43.0 ± 9.1 | 0.0016 ± 0.0003 |
+| 2 | NN-guided (A*) | 88.0 ± 6.7 | 100.0 ± 0.0 | 0.0150 ± 0.0022 |
+| 2 | No correction | 0.0 ± 0.0 | 4.0 ± 4.2 | 0.0002 ± 0.0001 |
+| 2 | Random correction | 1.0 ± 2.2 | 22.0 ± 10.4 | 0.0025 ± 0.0008 |
+| 3 | NN-guided (A*) | 85.0 ± 10.6 | 99.0 ± 2.2 | 0.0216 ± 0.0044 |
+| 3 | No correction | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.0001 ± 0.0000 |
+| 3 | Random correction | 0.0 ± 0.0 | 16.0 ± 11.4 | 0.0075 ± 0.0027 |
+| 4 | NN-guided (A*) | 0.0 ± 0.0 | 42.0 ± 8.4 | 0.0790 ± 0.0185 |
+| 4 | No correction | 0.0 ± 0.0 | 0.0 ± 0.0 | 0.0001 ± 0.0000 |
+| 4 | Random correction | 0.0 ± 0.0 | 11.0 ± 6.5 | 0.0185 ± 0.0067 |
+
+Note: same instances as Experiment 1 (30 givens, 0 skipped, 5 seed groups, std across groups). Random correction: up to 200 attempts of 1-3 random changes to conflicting cells; the first conflict-free grid goes to the CSP. 'Solved' = some valid solution; 'Recovery' = the true solution.
