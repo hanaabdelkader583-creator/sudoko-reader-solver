@@ -182,7 +182,8 @@ def solve_from_tiles(tiles, *, method: str = "astar", predict=None, solver=None,
                      max_expansions: int = 200_000, top_k: int = 8,
                      n_suspects: int = 5, temperature: float = 1.0,
                      max_corrections: int | None = None,
-                     solvable_goal: bool = False) -> TileSolveResult:
+                     solvable_goal: bool = False,
+                     unique_goal: bool = False) -> TileSolveResult:
     """NN -> conflicts + correction search -> CSP, with an 'unreadable' report."""
     if predict is None:
         from ..nn.interface import predict_cells as predict
@@ -195,11 +196,17 @@ def solve_from_tiles(tiles, *, method: str = "astar", predict=None, solver=None,
     read_grid = np.where(blank, 0, probs.argmax(axis=1) + 1).reshape(GRID, GRID).astype(np.int64)
     suspects = _suspects(probs, blank, n_suspects)
 
+    if unique_goal:
+        from ..data.sudoku_gen import count_solutions
+        _goal = lambda g: count_solutions(np.asarray(g, dtype=np.int64).reshape(81).copy(), 2) == 1
+    elif solvable_goal:
+        _goal = lambda g: _run_solver(solver, g)[0] is not None
+    else:
+        _goal = None
     search = search_corrections(probs, blank, method=method,
                                 max_expansions=max_expansions, top_k=top_k,
                                 max_corrections=max_corrections,
-                                goal=((lambda g: _run_solver(solver, g)[0] is not None)
-                                      if solvable_goal else None))
+                                goal=_goal)
     if not search.found:
         return TileSolveResult(
             "unreadable",

@@ -18,6 +18,7 @@ N_GIVENS = config.GIVENS_LEVELS[1]       # 30 givens
 MISREAD_LEVELS = (0, 1, 2, 3, 4)
 MAX_CORRECTIONS = 3                      # cap from the project brief
 MAX_EXPANSIONS = 300
+UNIQUE_GOAL = True
 RANDOM_TRIES = 200
 
 
@@ -80,14 +81,15 @@ def _record(inst, method, corrections=(), **kw):
 
 
 def run_search(inst, method, max_corrections=MAX_CORRECTIONS, max_expansions=MAX_EXPANSIONS,
-               solvable_goal=True):
+               solvable_goal=True, unique_goal=UNIQUE_GOAL):
     """NN probabilities -> correction search (ucs/greedy/astar) -> real CSP."""
     probs, blank = inst["probs"], inst["blank"]
     t0 = time.perf_counter()
     r = solve_from_tiles(inst["tiles"], method=method,
                          predict=lambda t, **kw: (probs.copy(), blank.copy()),
                          solver=csp_solve, max_expansions=max_expansions, top_k=3,
-                         max_corrections=max_corrections, solvable_goal=solvable_goal)
+                         max_corrections=max_corrections, solvable_goal=solvable_goal,
+                         unique_goal=unique_goal)
     dt = time.perf_counter() - t0
     recovered = bool(r.solved and np.array_equal(r.solution, inst["truth"]))
     return _record(inst, method, r.corrections, solved=float(r.solved), recovered=float(recovered),
